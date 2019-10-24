@@ -181,7 +181,7 @@ class Google_Client
    * @param $code string code from accounts.google.com
    * @return array access token
    */
-  public function fetchAccessTokenWithAuthCode($code)
+  public function fetchAccessTokenWithAuthCode($code, $redirectUrl = null)
   {
     if (strlen($code) == 0) {
       throw new InvalidArgumentException("Invalid code");
@@ -189,7 +189,7 @@ class Google_Client
 
     $auth = $this->getOAuth2Service();
     $auth->setCode($code);
-    $auth->setRedirectUri($this->getRedirectUri());
+    $auth->setRedirectUri($redirectUrl ? $redirectUrl : $this->getRedirectUri());
 
     $httpHandler = HttpHandlerFactory::build($this->getHttpClient());
     $creds = $auth->fetchAuthToken($httpHandler);
